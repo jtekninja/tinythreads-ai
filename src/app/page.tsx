@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Logo } from "@/components/branding/Logo";
-import { AppIcon } from "@/components/branding/AppIcon";
+import { SmartWatchPreview } from "@/components/marketing/SmartWatchPreview";
 import Link from "next/link";
 import {
   Sparkles,
@@ -14,16 +14,11 @@ import {
   TrendingUp,
   Shield,
   ArrowRight,
-  Star,
   Smartphone,
   Bell,
   Package,
   MessageCircle,
-  ChevronDown,
   Gem,
-  Search,
-  Users,
-  Clock,
   type LucideIcon,
 } from "lucide-react";
 
@@ -57,95 +52,6 @@ const staggerChildren = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.12 } },
 };
-
-const iconProps = { className: "w-6 h-6 text-brand-purple-light" };
-
-// ── Phone Mockup Component ──
-function PhoneMockup() {
-  return (
-    <div className="relative w-[280px] sm:w-[320px] mx-auto">
-      {/* Phone frame */}
-      <div className="relative rounded-[40px] border-[6px] border-brand-indigo/80 bg-brand-indigo overflow-hidden shadow-2xl shadow-brand-indigo/20">
-        {/* Status bar */}
-        <div className="h-10 bg-brand-indigo flex items-center justify-between px-6 pt-2">
-          <span className="text-[10px] text-white/50 font-medium">9:41</span>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-full bg-white/20" />
-            <div className="w-3 h-3 rounded-full bg-white/20" />
-            <div className="w-3 h-3 rounded-full bg-white/10" />
-          </div>
-        </div>
-
-        <div className="bg-brand-white p-3 space-y-2">
-          {/* TT header */}
-          <div className="flex items-center gap-2 pb-2 border-b border-brand-indigo/5">
-            <AppIcon size={32} />
-            <div>
-              <p className="text-xs font-bold text-brand-indigo">
-                TT Assistant
-              </p>
-              <p className="text-[10px] text-brand-indigo/40">Emma · Size 5T</p>
-            </div>
-          </div>
-
-          {/* Chat bubbles */}
-          <div className="space-y-2">
-            <div className="bg-brand-purple/8 rounded-2xl rounded-tl-sm p-2.5 text-xs text-brand-indigo/70 max-w-[85%]">
-              Hi! I found 4 dinosaur shirts in Emma's size 🦕
-            </div>
-            <div className="bg-brand-pink/8 rounded-2xl rounded-tl-sm p-2.5 text-xs text-brand-indigo/70 max-w-[85%] ml-auto">
-              Best deal: Carter's tee at $8 — 40% below average!
-            </div>
-
-            {/* AI card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-brand-purple/8 p-3">
-              <div className="flex items-start gap-2">
-                <div className="w-10 h-10 rounded-xl bg-brand-purple/10 flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-5 h-5 text-brand-purple" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-brand-indigo">
-                    Dino Explorer Tee
-                  </p>
-                  <p className="text-[10px] text-brand-indigo/40">
-                    Carter's · 5T · LIKE NEW
-                  </p>
-                  <div className="flex items-center gap-2 mt-1.5">
-                    <span className="text-sm font-extrabold text-brand-purple">
-                      $12.99
-                    </span>
-                    <span className="text-[10px] text-brand-indigo/30 line-through">
-                      $22.99
-                    </span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 font-bold">
-                      Great Deal
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Auction card */}
-            <div className="bg-gradient-to-r from-brand-purple/90 to-brand-pink/90 rounded-2xl p-2.5 text-white">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <Timer className="w-3.5 h-3.5 animate-pulse" />
-                  <span className="text-sm font-extrabold">45s</span>
-                  <span className="text-[10px] text-white/70">left</span>
-                </div>
-                <span className="text-lg font-extrabold">$8.50</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Floating glow blobs around phone */}
-      <div className="absolute -top-8 -left-12 w-40 h-40 bg-brand-purple/15 rounded-full blur-3xl animate-breathe pointer-events-none" />
-      <div className="absolute -bottom-8 -right-12 w-40 h-40 bg-brand-pink/10 rounded-full blur-3xl animate-float-slow pointer-events-none" />
-    </div>
-  );
-}
 
 // ── Feature Card ──
 function FeatureCard({
@@ -309,14 +215,14 @@ export default function LandingPage() {
               </motion.div>
             </motion.div>
 
-            {/* RIGHT: Phone Mockup */}
+            {/* RIGHT: SmartWatch Preview */}
             <motion.div
               variants={fadeInScale}
               initial="hidden"
               animate="visible"
               className="flex justify-center lg:justify-end flex-shrink-0"
             >
-              <PhoneMockup />
+              <SmartWatchPreview />
             </motion.div>
           </div>
         </div>
@@ -543,7 +449,7 @@ export default function LandingPage() {
               </motion.div>
             </motion.div>
 
-            {/* Right: Phone Mockup */}
+            {/* Right: SmartWatch Preview */}
             <motion.div
               variants={fadeInScale}
               initial="hidden"
@@ -551,7 +457,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               className="flex justify-center"
             >
-              <PhoneMockup />
+              <SmartWatchPreview />
             </motion.div>
           </div>
         </div>
