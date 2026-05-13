@@ -8,7 +8,7 @@ export function SmartWatchPreview() {
     <motion.div
       animate={{ y: [0, -5, 0] }}
       transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" as const }}
-      className="relative mx-auto w-[320px] sm:w-[420px] lg:w-[500px] max-w-full"
+      className="relative mx-auto w-[260px] sm:w-[320px] lg:w-[360px] xl:w-[400px] max-w-full"
     >
       {/* Outer bezel shell — glossy metallic black */}
       <div className="relative aspect-square rounded-[4rem] bg-[#0F0B1A] p-[16px] shadow-[0_40px_100px_rgba(15,11,26,0.5)] ring-1 ring-white/[0.08]">
@@ -21,7 +21,7 @@ export function SmartWatchPreview() {
           <div className="absolute top-0 left-8 right-8 h-[2px] bg-white/60 pointer-events-none z-10" />
 
           {/* ══ SAFE CONTENT ZONE — nothing escapes ══ */}
-          <div className="flex h-full flex-col px-[28px] pt-[28px] pb-[24px] overflow-hidden gap-y-2.5 sm:gap-y-3">
+          <div className="flex h-full flex-col px-6 pt-6 pb-6 overflow-hidden gap-y-2.5 sm:gap-y-3">
             {/* Status bar */}
             <div className="flex items-center justify-between h-5 shrink-0 min-w-0">
               <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400">

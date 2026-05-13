@@ -192,8 +192,8 @@ export default function LandingPage() {
           <div className="absolute bottom-0 left-1/4 w-[600px] h-[200px] bg-brand-glow/4 rounded-full blur-3xl" />
         </div>
 
-        <div className="container-page relative w-full pt-32 md:pt-28 lg:pt-32 pb-12 md:pb-16 lg:pb-20">
-          <div className="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+        <div className="container-page relative w-full pt-28 md:pt-28 lg:pt-32 pb-12 md:pb-16 lg:pb-20">
+          <div className="grid lg:grid-cols-2 gap-20 xl:gap-28 items-center">
             {/* LEFT: Content */}
             <motion.div
               initial="hidden"
