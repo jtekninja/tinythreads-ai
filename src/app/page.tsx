@@ -141,7 +141,7 @@ export default function LandingPage() {
       </motion.nav>
 
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative min-h-[100svh] flex items-center safe-top overflow-visible">
+      <section className="relative min-h-[100svh] flex items-start lg:items-center safe-top overflow-visible">
         {/* Background atmosphere */}
         <div className="absolute inset-0 pointer-events-none overflow-visible">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-purple/6 rounded-full blur-3xl" />
@@ -149,7 +149,7 @@ export default function LandingPage() {
           <div className="absolute bottom-0 left-1/4 w-[600px] h-[300px] bg-brand-glow/6 rounded-full blur-3xl" />
         </div>
 
-        <div className="container-page relative w-full pt-24 md:pt-28 lg:pt-32 pb-12 md:pb-16 lg:pb-20">
+        <div className="container-page relative w-full pt-28 md:pt-28 lg:pt-32 pb-12 md:pb-16 lg:pb-20">
           <div className="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
             {/* LEFT: Content */}
             <motion.div
@@ -172,10 +172,13 @@ export default function LandingPage() {
               {/* Headline */}
               <motion.h1
                 variants={fadeUp}
-                className="hero-headline text-brand-indigo mb-6"
+                className="hero-headline text-brand-indigo mb-6 overflow-visible"
               >
-                AI Shopping for{" "}
-                <span className="gradient-brand-text">Growing Kids</span>
+                <span className="block lg:inline">AI Shopping</span>{" "}
+                <span className="block lg:inline">for </span>
+                <span className="gradient-brand-text block lg:inline">
+                  Growing Kids
+                </span>
               </motion.h1>
 
               {/* Subheadline */}

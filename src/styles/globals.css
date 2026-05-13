@@ -53,11 +53,20 @@ body {
 
 .hero-headline {
   font-family: var(--font-family-heading);
-  font-size: clamp(3rem, 8vw, 6.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.025em;
+  font-size: clamp(3.2rem, 14vw, 6.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
   font-weight: 900;
-  max-width: 12ch;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .hero-headline {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    max-width: 12ch;
+  }
 }
 
 .section-headline {
