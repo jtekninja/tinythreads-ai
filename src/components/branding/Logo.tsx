@@ -19,7 +19,6 @@ export function Logo({
   className,
   showText = true,
 }: LogoProps) {
-  // Simple, clean sizes — navbar gets a big logo, footer gets compact
   const textCls =
     variant === "compact"
       ? size === "xl"
@@ -47,14 +46,16 @@ export function Logo({
       href="/"
       className={cn("flex items-center gap-3 shrink-0", className)}
     >
-      <Image
-        src={LOGO_PATH}
-        alt="TinyThreads AI"
-        width={600}
-        height={200}
-        className="h-16 lg:h-20 w-auto object-cover"
-        priority
-      />
+      <div className="relative h-20 lg:h-24 w-auto aspect-[3/2] overflow-hidden shrink-0">
+        <Image
+          src={LOGO_PATH}
+          alt="TinyThreads AI"
+          width={1536}
+          height={1024}
+          className="h-full w-full object-cover scale-[1.15]"
+          priority
+        />
+      </div>
       {showText && variant === "full" && (
         <span
           className={cn(
