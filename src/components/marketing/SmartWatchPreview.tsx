@@ -75,8 +75,8 @@ export function SmartWatchPreview() {
                 </p>
               </div>
               {/* Price — stick right */}
-              <div className="shrink-0 text-right">
-                <p className="text-[13px] sm:text-[15px] font-extrabold text-violet-600 leading-none truncate">
+              <div className="shrink-0 text-right whitespace-nowrap pr-1">
+                <p className="text-[13px] sm:text-[15px] font-extrabold text-violet-600 leading-none">
                   $12.99
                 </p>
                 <span className="inline-block mt-[2px] px-2 py-px rounded-full bg-emerald-100 text-[9px] sm:text-[10px] font-bold text-emerald-700 leading-none">
