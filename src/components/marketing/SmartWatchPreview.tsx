@@ -21,7 +21,7 @@ export function SmartWatchPreview() {
           <div className="absolute top-0 left-8 right-8 h-[2px] bg-white/60 pointer-events-none z-10" />
 
           {/* ══ SAFE CONTENT ZONE — nothing escapes ══ */}
-          <div className="flex h-full flex-col px-6 pt-6 pb-6 overflow-hidden gap-y-2.5 sm:gap-y-3">
+          <div className="flex h-full flex-col px-6 pt-6 pb-6 overflow-visible gap-y-2.5 sm:gap-y-3">
             {/* Status bar */}
             <div className="flex items-center justify-between h-5 shrink-0 min-w-0">
               <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400">
@@ -60,7 +60,7 @@ export function SmartWatchPreview() {
             </div>
 
             {/* Product card — overflow-proof */}
-            <div className="flex items-center gap-3 sm:gap-4 rounded-3xl border border-slate-200/80 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 min-w-0 overflow-hidden shrink-0">
+            <div className="flex items-center gap-3 sm:gap-4 rounded-3xl border border-slate-200/80 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 min-w-0 shrink-0">
               {/* Thumbnail */}
               <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-2xl bg-violet-100/60 flex items-center justify-center shrink-0">
                 <Zap className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] text-violet-500" />
