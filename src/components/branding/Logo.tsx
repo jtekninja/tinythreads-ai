@@ -20,33 +20,23 @@ export function Logo({
   showText = true,
 }: LogoProps) {
   // Simple, clean sizes — navbar gets a big logo, footer gets compact
-  const iconPx =
-    variant === "compact" || variant === "icon"
-      ? size === "xl"
-        ? 64
-        : 28
-      : 56;
   const textCls =
     variant === "compact"
       ? size === "xl"
         ? "text-3xl"
         : "text-sm"
-      : "text-xl lg:text-2xl";
+      : "text-2xl lg:text-3xl";
 
   if (variant === "icon") {
     return (
-      <div
-        className={cn("relative shrink-0", className)}
-        style={{ width: iconPx, height: iconPx }}
-      >
+      <div className={cn("relative shrink-0", className)}>
         <Image
           src={LOGO_PATH}
           alt="TinyThreads AI"
-          width={iconPx}
-          height={iconPx}
-          className="object-contain"
+          width={160}
+          height={48}
+          className="h-10 w-auto object-contain"
           priority
-          style={{ width: iconPx, height: iconPx }}
         />
       </div>
     );
@@ -55,22 +45,16 @@ export function Logo({
   return (
     <Link
       href="/"
-      className={cn("flex items-center gap-3 group shrink-0", className)}
+      className={cn("flex items-center gap-3 shrink-0", className)}
     >
-      <div
-        className="relative shrink-0"
-        style={{ width: iconPx, height: iconPx }}
-      >
-        <Image
-          src={LOGO_PATH}
-          alt="TinyThreads AI"
-          width={iconPx}
-          height={iconPx}
-          className="object-contain"
-          priority
-          style={{ width: iconPx, height: iconPx }}
-        />
-      </div>
+      <Image
+        src={LOGO_PATH}
+        alt="TinyThreads AI"
+        width={240}
+        height={72}
+        className="h-14 lg:h-16 w-auto object-contain"
+        priority
+      />
       {showText && variant === "full" && (
         <span
           className={cn(
