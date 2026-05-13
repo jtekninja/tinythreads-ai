@@ -12,10 +12,10 @@ interface LogoProps {
 }
 
 const sizeMap = {
-  sm: { icon: 28, text: "text-sm" },
-  md: { icon: 44, text: "text-lg" },
-  lg: { icon: 52, text: "text-xl" },
-  xl: { icon: 64, text: "text-3xl" },
+  sm: { icon: 26, text: "text-xs" },
+  md: { icon: 48, text: "text-xl" },
+  lg: { icon: 56, text: "text-2xl" },
+  xl: { icon: 68, text: "text-3xl" },
 };
 
 const LOGO_PATH = "/branding/tt_tinythreads_logo.png";
@@ -46,7 +46,7 @@ export function Logo({
   }
 
   return (
-    <Link href="/" className={cn("flex items-center gap-2.5 group", className)}>
+    <Link href="/" className={cn("flex items-center gap-3 group", className)}>
       <div
         className="relative flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
         style={{ width: dims.icon, height: dims.icon }}

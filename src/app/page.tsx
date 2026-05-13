@@ -156,7 +156,7 @@ export default function LandingPage() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="navbar-glass safe-top"
       >
-        <div className="container-page h-16 flex items-center justify-between">
+        <div className="container-page h-20 flex items-center justify-between">
           <Logo variant="full" size="md" />
           <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-brand-indigo/45">
             <span className="hover:text-brand-purple transition-colors cursor-pointer">
@@ -219,7 +219,9 @@ export default function LandingPage() {
               >
                 <span className="block">AI Shopping</span>
                 <span className="block">for</span>
-                <span className="block gradient-brand-text">Growing Kids</span>
+                <span className="block bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">
+                  Growing Kids
+                </span>
               </motion.h1>
 
               {/* Subheadline */}
