@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
+import { Suspense } from "react";
 
 interface AppIconProps {
   size?: number;
@@ -32,6 +33,7 @@ export function AppIcon({
           "object-contain p-1",
           variant === "monochrome" && "grayscale brightness-0",
         )}
+        style={{ width: size, height: size }}
       />
     </div>
   );

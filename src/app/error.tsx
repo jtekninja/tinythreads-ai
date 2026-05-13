@@ -15,7 +15,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-dvh bg-brand-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-brand-white flex items-center justify-center px-4">
       <div className="max-w-md text-center">
         <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-brand-purple/10 flex items-center justify-center">
           <span className="text-3xl">⚡</span>

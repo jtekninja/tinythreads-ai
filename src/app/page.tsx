@@ -148,7 +148,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-dvh bg-brand-white overflow-x-clip selection:bg-brand-purple/15 selection:text-brand-purple">
+    <div className="min-h-screen bg-brand-white overflow-x-clip selection:bg-brand-purple/15 selection:text-brand-purple">
       {/* ══════════════════════ NAVBAR ══════════════════════ */}
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
@@ -184,7 +184,7 @@ export default function LandingPage() {
       </motion.nav>
 
       {/* ══════════════════════ HERO ══════════════════════ */}
-      <section className="relative min-h-[100svh] flex items-start lg:items-center safe-top overflow-visible">
+      <section className="relative min-h-screen flex items-start lg:items-center safe-top overflow-visible">
         {/* Atmosphere */}
         <div className="absolute inset-0 pointer-events-none overflow-visible">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-brand-purple/8 to-transparent rounded-full blur-3xl" />
