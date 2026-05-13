@@ -156,7 +156,7 @@ export default function LandingPage() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="navbar-glass safe-top"
       >
-        <div className="container-page h-20 flex items-center justify-between">
+        <div className="container-page h-24 lg:h-28 flex items-center justify-between">
           <Logo variant="full" size="md" />
           <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-brand-indigo/45">
             <span className="hover:text-brand-purple transition-colors cursor-pointer">

@@ -33,9 +33,9 @@ export function Logo({
         <Image
           src={LOGO_PATH}
           alt="TinyThreads AI"
-          width={160}
-          height={48}
-          className="h-10 w-auto object-contain"
+          width={800}
+          height={260}
+          className="h-full w-auto object-contain"
           priority
         />
       </div>
@@ -50,9 +50,9 @@ export function Logo({
       <Image
         src={LOGO_PATH}
         alt="TinyThreads AI"
-        width={240}
-        height={72}
-        className="h-14 lg:h-16 w-auto object-contain"
+        width={600}
+        height={200}
+        className="h-16 lg:h-20 w-auto object-cover"
         priority
       />
       {showText && variant === "full" && (
