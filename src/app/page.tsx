@@ -192,7 +192,7 @@ export default function LandingPage() {
           <div className="absolute bottom-0 left-1/4 w-[600px] h-[200px] bg-brand-glow/4 rounded-full blur-3xl" />
         </div>
 
-        <div className="container-page relative w-full pt-28 md:pt-28 lg:pt-32 pb-12 md:pb-16 lg:pb-20">
+        <div className="container-page relative w-full pt-32 md:pt-28 lg:pt-32 pb-12 md:pb-16 lg:pb-20">
           <div className="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
             {/* LEFT: Content */}
             <motion.div
@@ -217,11 +217,9 @@ export default function LandingPage() {
                 variants={fadeUp}
                 className="hero-headline text-brand-indigo mb-6 overflow-visible"
               >
-                <span className="block lg:inline">AI Shopping</span>{" "}
-                <span className="block lg:inline">for </span>
-                <span className="gradient-brand-text block lg:inline">
-                  Growing Kids
-                </span>
+                <span className="block">AI Shopping</span>
+                <span className="block">for</span>
+                <span className="block gradient-brand-text">Growing Kids</span>
               </motion.h1>
 
               {/* Subheadline */}
@@ -346,10 +344,10 @@ export default function LandingPage() {
           <AnimatePresence mode="wait">
             {selectedPrompt && (
               <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.97 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="max-w-xl mx-auto"
+                initial="hidden"
+                animate="visible"
+                variants={staggerChildren}
+                className="flex-shrink-0 min-w-0 overflow-visible max-w-[92vw]"
               >
                 <div className="rounded-2xl border-2 border-brand-purple/15 bg-white p-5 md:p-6 shadow-lg shadow-brand-purple/5">
                   {aiThinking ? (

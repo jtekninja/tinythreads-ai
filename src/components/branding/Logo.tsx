@@ -12,10 +12,10 @@ interface LogoProps {
 }
 
 const sizeMap = {
-  sm: { icon: 24, text: "text-sm" },
-  md: { icon: 32, text: "text-lg" },
-  lg: { icon: 40, text: "text-xl" },
-  xl: { icon: 56, text: "text-3xl" },
+  sm: { icon: 28, text: "text-sm" },
+  md: { icon: 44, text: "text-lg" },
+  lg: { icon: 52, text: "text-xl" },
+  xl: { icon: 64, text: "text-3xl" },
 };
 
 const LOGO_PATH = "/branding/tt_tinythreads_logo.png";
