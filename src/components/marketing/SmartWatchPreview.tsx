@@ -10,18 +10,16 @@ export function SmartWatchPreview() {
       transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" as const }}
       className="relative mx-auto w-[260px] sm:w-[320px] lg:w-[360px] xl:w-[400px] max-w-full"
     >
-      {/* Outer bezel shell — glossy metallic black */}
+      {/* Outer bezel shell */}
       <div className="relative aspect-square rounded-[4rem] bg-[#0F0B1A] p-[16px] shadow-[0_40px_100px_rgba(15,11,26,0.5)] ring-1 ring-white/[0.08]">
-        {/* Glass surface highlight */}
         <div className="absolute inset-0 rounded-[4rem] bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none z-10" />
 
-        {/* Inner screen */}
+        {/* Inner screen — ONLY outer mask clips */}
         <div className="relative h-full w-full rounded-[3.5rem] overflow-hidden bg-[#FAFAFC] flex flex-col">
-          {/* Top glass reflection */}
           <div className="absolute top-0 left-8 right-8 h-[2px] bg-white/60 pointer-events-none z-10" />
 
-          {/* ══ SAFE CONTENT ZONE — nothing escapes ══ */}
-          <div className="flex h-full flex-col px-6 pt-6 pb-6 overflow-visible gap-y-2.5 sm:gap-y-3">
+          {/* Safe content zone */}
+          <div className="flex h-full flex-col px-6 pt-6 pb-6 overflow-hidden gap-y-2.5 sm:gap-y-3">
             {/* Status bar */}
             <div className="flex items-center justify-between h-5 shrink-0 min-w-0">
               <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400">
@@ -34,7 +32,7 @@ export function SmartWatchPreview() {
               </div>
             </div>
 
-            {/* Assistant header */}
+            {/* Header */}
             <div className="flex items-center gap-2.5 shrink-0 min-w-0">
               <div className="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] rounded-xl bg-violet-100/70 flex items-center justify-center shrink-0">
                 <Sparkles className="w-[15px] h-[15px] sm:w-[17px] sm:h-[17px] text-violet-600" />
@@ -49,8 +47,8 @@ export function SmartWatchPreview() {
               </div>
             </div>
 
-            {/* Alert card */}
-            <div className="rounded-3xl bg-violet-50/80 px-3.5 sm:px-4 py-2.5 sm:py-3 shrink-0 min-w-0 overflow-hidden">
+            {/* Alert */}
+            <div className="rounded-3xl bg-violet-50/80 px-3.5 sm:px-4 py-2.5 sm:py-3 shrink-0 min-w-0">
               <p className="text-[11px] sm:text-[12px] text-slate-800 leading-snug font-medium truncate">
                 4 dinosaur shirts found
               </p>
@@ -59,27 +57,24 @@ export function SmartWatchPreview() {
               </p>
             </div>
 
-            {/* Product card — overflow-proof */}
-            <div className="flex items-center gap-3 sm:gap-4 rounded-3xl border border-slate-200/80 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 min-w-0 shrink-0">
-              {/* Thumbnail */}
-              <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-2xl bg-violet-100/60 flex items-center justify-center shrink-0">
-                <Zap className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] text-violet-500" />
+            {/* Product card — fixed-width right column prevents clipping */}
+            <div className="flex items-center gap-2.5 sm:gap-3 w-full rounded-3xl border border-slate-200/80 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 shrink-0 min-w-0">
+              <div className="w-10 h-10 sm:w-[46px] sm:h-[46px] rounded-2xl bg-violet-100/60 flex items-center justify-center shrink-0">
+                <Zap className="w-[16px] h-[16px] sm:w-[20px] sm:h-[20px] text-violet-500" />
               </div>
-              {/* Info — constrained */}
-              <div className="flex-1 min-w-0 overflow-hidden">
-                <p className="text-[12px] sm:text-[13px] font-semibold text-slate-900 leading-tight truncate">
+              <div className="min-w-0 flex-1">
+                <p className="text-[11px] sm:text-[12px] font-semibold text-slate-900 leading-tight truncate">
                   Dino Tee
                 </p>
-                <p className="text-[10px] sm:text-[11px] text-slate-400 leading-tight truncate">
+                <p className="text-[10px] text-slate-400 leading-tight truncate">
                   5T · Like New
                 </p>
               </div>
-              {/* Price — stick right */}
-              <div className="shrink-0 text-right whitespace-nowrap pr-1">
-                <p className="text-[13px] sm:text-[15px] font-extrabold text-violet-600 leading-none">
+              <div className="w-[64px] shrink-0 text-right pr-2">
+                <p className="whitespace-nowrap text-[12px] font-bold text-violet-600 leading-none">
                   $12.99
                 </p>
-                <span className="inline-block mt-[2px] px-2 py-px rounded-full bg-emerald-100 text-[9px] sm:text-[10px] font-bold text-emerald-700 leading-none">
+                <span className="inline-block mt-[2px] px-1.5 py-px rounded-full bg-emerald-100 text-[9px] font-bold text-emerald-700 leading-none">
                   Deal
                 </span>
               </div>
@@ -93,15 +88,14 @@ export function SmartWatchPreview() {
                   45s left
                 </span>
               </div>
-              <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 shrink-0 truncate">
+              <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 shrink-0">
                 $8.50
               </span>
             </div>
 
-            {/* Spacer */}
             <div className="flex-1 min-h-0" />
 
-            {/* Bottom actions */}
+            {/* Bottom CTA */}
             <div className="flex items-center gap-2.5 pt-1 sm:pt-2 shrink-0">
               <button className="flex-1 h-9 sm:h-10 rounded-full bg-[#0F0B1A] text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-violet-500/15 active:scale-[0.97] transition-transform truncate px-3 min-w-0 overflow-hidden">
                 <Zap className="w-[13px] h-[13px] sm:w-[15px] sm:h-[15px] shrink-0" />
@@ -114,12 +108,12 @@ export function SmartWatchPreview() {
           </div>
         </div>
 
-        {/* Side crown + button */}
+        {/* Side crown */}
         <div className="absolute -right-[6px] top-[38%] h-[70px] w-[6px] rounded-r-full bg-[#1C1640]" />
         <div className="absolute -right-[6px] top-[56%] h-[32px] w-[6px] rounded-r-full bg-[#1C1640]" />
       </div>
 
-      {/* Soft purple glow behind watch */}
+      {/* Glow */}
       <div className="absolute -top-10 -left-10 w-40 h-40 bg-violet-500/[0.12] rounded-full blur-3xl animate-breathe pointer-events-none" />
       <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-rose-400/[0.06] rounded-full blur-2xl animate-float-slow pointer-events-none" />
     </motion.div>
