@@ -1,0 +1,621 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// AUTH & USERS
+// ============================================
+
+enum UserRole {
+  PARENT
+  SELLER
+  ADMIN
+}
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+  APPLE
+}
+
+model User {
+  id            String       @id @default(cuid())
+  email         String       @unique
+  emailVerified DateTime?
+  name          String?
+  avatarUrl     String?
+  role          UserRole     @default(PARENT)
+  provider      AuthProvider @default(EMAIL)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  // Relations
+  children        ChildProfile[]
+  orders          Order[]
+  bids            Bid[]
+  watchlistItems  WatchlistItem[]
+  notifications   Notification[]
+  sellerProfile   SellerProfile?
+  recommendations AIRecommendation[]
+  memories        AIMemory[]
+  searchLogs      AISearchLog[]
+  bundleHistory   AIBundleHistory[]
+  reviews         Review[]
+  cartItems       CartItem[]
+  savedSearches   SavedSearch[]
+  addresses       Address[]
+  payments        PaymentMethod[]
+  wonAuctions     Auction[]       @relation("AuctionWinner")
+  aiUserPreference AIUserPreference?
+}
+
+// ============================================
+// CHILDREN PROFILES
+// ============================================
+
+model ChildProfile {
+  id            String   @id @default(cuid())
+  userId        String
+  name          String
+  age           Int
+  currentSize   String   // e.g. "5T", "6", "XS"
+  growthSpeed   String   @default("average") // slow, average, fast
+  favoriteColors String[]
+  favoriteThemes String[] // space, dinosaurs, princess, sports
+  preferredBrands String[]
+  sensoryPreferences String? // tagless, soft-fabric, no-zippers
+  schoolDressCode String?
+  measurements   Json?    // { height, weight, chest, waist }
+  photoUrl       String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  memories      AIMemory[]
+
+  @@index([userId])
+}
+
+// ============================================
+// SELLERS
+// ============================================
+
+model SellerProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  storeName       String
+  storeDescription String?
+  logoUrl         String?
+  rating          Float    @default(0)
+  totalSales      Int      @default(0)
+  verified        Boolean  @default(false)
+  stripeConnectId String?
+  stripeOnboarded Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products Product[]
+  auctions Auction[]
+
+  @@index([userId])
+}
+
+// ============================================
+// PRODUCTS
+// ============================================
+
+enum ProductCondition {
+  NEW
+  LIKE_NEW
+  GOOD
+  FAIR
+}
+
+enum ProductCategory {
+  T_SHIRTS
+  HOODIES
+  PANTS
+  DRESSES
+  OUTFITS
+  PAJAMAS
+  SWIMWEAR
+  OUTERWEAR
+  SHOES
+  ACCESSORIES
+  BUNDLES
+}
+
+enum ProductStatus {
+  ACTIVE
+  SOLD
+  AUCTION
+  DRAFT
+  DELISTED
+}
+
+model Product {
+  id          String           @id @default(cuid())
+  sellerId    String
+  title       String
+  description String
+  price       Float
+  originalPrice Float?
+  size        String
+  brand       String?
+  condition   ProductCondition @default(GOOD)
+  category    ProductCategory
+  status      ProductStatus    @default(ACTIVE)
+  gender      String?          // unisex, boy, girl
+  season      String?          // spring, summer, fall, winter, all-season
+  images      String[]         // URLs
+  tags        String[]         // AI-generated + manual
+  color       String?
+  material    String?
+  quantity    Int              @default(1)
+
+  // AI fields
+  aiTags        String[]
+  aiDescription String?
+  dealScore     Float?        // 0-100 AI score
+  trendingScore Float?        // 0-100
+  resaleValue   Float?        // estimated resale
+  styleCategory String?       // casual, athletic, formal, etc.
+
+  // Metrics
+  viewCount     Int           @default(0)
+  favoriteCount Int           @default(0)
+  salesCount    Int           @default(0)
+  conversionRate Float?
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  seller          SellerProfile    @relation(fields: [sellerId], references: [id])
+  auction         Auction?
+  orderItems      OrderItem[]
+  watchlistItems  WatchlistItem[]
+  recommendations AIRecommendation[]
+  cartItems       CartItem[]
+  bundleItems     BundleItem[]
+  reviews         Review[]
+  embedding       AIEmbedding?
+
+  @@index([sellerId])
+  @@index([status])
+  @@index([category])
+  @@index([price])
+  @@index([size])
+}
+
+// ============================================
+// AUCTIONS
+// ============================================
+
+enum AuctionStatus {
+  SCHEDULED
+  LIVE
+  ENDED
+  CANCELLED
+}
+
+model Auction {
+  id            String        @id @default(cuid())
+  productId     String        @unique
+  sellerId      String
+  startPrice    Float
+  currentPrice  Float
+  buyNowPrice   Float?
+  bidIncrement  Float         @default(1.0)
+  reservePrice  Float?
+  startTime     DateTime
+  endTime       DateTime
+  status        AuctionStatus @default(SCHEDULED)
+  winnerId      String?
+  bidCount      Int           @default(0)
+  watcherCount  Int           @default(0)
+
+  // Auction type: "standard" (hours/days) or "lightning" (60-300 seconds)
+  auctionType   String        @default("standard")
+  lightningDuration Int?      // seconds for lightning auctions
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  seller  SellerProfile @relation(fields: [sellerId], references: [id])
+  bids    Bid[]
+  winner  User?   @relation("AuctionWinner", fields: [winnerId], references: [id])
+
+  @@index([productId])
+  @@index([status, endTime])
+  @@index([sellerId])
+}
+
+model Bid {
+  id        String   @id @default(cuid())
+  auctionId String
+  userId    String
+  amount    Float
+  isAutoBid Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  auction Auction @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([auctionId, createdAt])
+  @@index([userId])
+}
+
+// ============================================
+// ORDERS & CART
+// ============================================
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  buyerId         String
+  sellerId        String
+  status          OrderStatus @default(PENDING)
+  subtotal        Float
+  shippingCost    Float       @default(0)
+  tax             Float       @default(0)
+  total           Float
+  stripePaymentId String?
+  shippingAddress String?     // JSON
+  trackingNumber  String?
+  paidAt          DateTime?
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  buyer User        @relation(fields: [buyerId], references: [id])
+  items OrderItem[]
+
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([status])
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int    @default(1)
+  price     Float
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+// ============================================
+// BUNDLES
+// ============================================
+
+enum BundleType {
+  AI_GENERATED
+  SELLER_CURATED
+  SEASONAL
+  BUDGET
+  OUTFIT_MATCH
+  SCHOOL
+  VACATION
+}
+
+model Bundle {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  type        BundleType
+  season      String?
+  budget      Float?
+  totalPrice  Float
+  discount    Float      @default(0)
+  imageUrl    String?
+  isActive    Boolean    @default(true)
+  aiReasoning String?    // Why AI created this bundle
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  items BundleItem[]
+}
+
+model BundleItem {
+  id        String @id @default(cuid())
+  bundleId  String
+  productId String
+  quantity  Int    @default(1)
+
+  bundle  Bundle  @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([bundleId, productId])
+}
+
+// ============================================
+// WATCHLIST & SAVED
+// ============================================
+
+model WatchlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  auctionId String?   // Optional, if watching an auction
+  addedAt   DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+model SavedSearch {
+  id        String   @id @default(cuid())
+  userId    String
+  query     String
+  filters   Json?    // { sizes, categories, priceRange, etc }
+  notifyOnNew Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ============================================
+// ADDRESSES & PAYMENT
+// ============================================
+
+model Address {
+  id         String @id @default(cuid())
+  userId     String
+  label      String @default("Home") // Home, Work, Grandma, etc
+  name       String
+  line1      String
+  line2      String?
+  city       String
+  state      String
+  zip        String
+  phone      String?
+  isDefault  Boolean @default(false)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PaymentMethod {
+  id            String   @id @default(cuid())
+  userId        String
+  stripePaymentMethodId String
+  cardBrand     String?
+  cardLast4     String?
+  expMonth      Int?
+  expYear       Int?
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ============================================
+// NOTIFICATIONS
+// ============================================
+
+enum NotificationType {
+  AUCTION_ENDING
+  AUCTION_WON
+  AUCTION_OUTBID
+  PRICE_DROP
+  BACK_IN_STOCK
+  NEW_LISTING_MATCH
+  BUNDLE_SUGGESTION
+  SIZE_UP_REMINDER
+  DEAL_ALERT
+  ORDER_UPDATE
+  AI_RECOMMENDATION
+  SOCIAL
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  body      String
+  data      Json?            // Action payload
+  actionUrl String?
+  isRead    Boolean          @default(false)
+  isPushSent Boolean         @default(false)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, createdAt])
+}
+
+// ============================================
+// REVIEWS
+// ============================================
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  orderId   String?
+  rating    Int      // 1-5
+  comment   String?
+  images    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([productId])
+}
+
+// ============================================
+// AI-SPECIFIC TABLES
+// ============================================
+
+model AIRecommendation {
+  id           String   @id @default(cuid())
+  userId       String
+  productId    String
+  score        Float    // 0-100 confidence
+  reasoning    String?  // Natural language reason
+  type         String   // similar, bundle, size-up, seasonal, trendy
+  wasPurchased Boolean  @default(false)
+  wasClicked   Boolean  @default(false)
+  wasDismissed Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+  @@index([productId])
+}
+
+model AIEmbedding {
+  id        String   @id @default(cuid())
+  productId String   @unique
+  embedding Float[]
+  model     String   @default("text-embedding-3-small")
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model AIMemory {
+  id        String   @id @default(cuid())
+  userId    String
+  childId   String?
+  type      String   // preference, style, size_history, purchase_pattern
+  key       String   // e.g. "favorite_colors", "size_timeline"
+  value     Json     // Flexible memory data
+  embedding Float[] @default([]) // For semantic memory search
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  child ChildProfile? @relation(fields: [childId], references: [id])
+
+  @@index([userId, type])
+  @@index([childId])
+}
+
+model AISearchLog {
+  id        String   @id @default(cuid())
+  userId    String
+  query     String
+  intent    String?  // AI-parsed intent
+  filters   Json?    // Extracted filters
+  resultCount Int    @default(0)
+  wasSatisfied Boolean? // Did the search lead to a purchase?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model AIBundleHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  bundleId  String?
+  prompt    String   // User's natural language request
+  result    Json     // Generated bundle data
+  wasAccepted Boolean @default(false)
+  wasPurchased Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model AIUserPreference {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  styleThemes     String[] // casual, sporty, preppy, etc
+  favoriteColors  String[]
+  preferredBrands String[]
+  sensoryTags     String[] // tagless, organic, seamless
+  budgetRange     Json?    // { min, max }
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AIReasoningLog {
+  id          String   @id @default(cuid())
+  userId      String
+  context     String   // recommendation, bundle, search, deal_score
+  input       Json     // What the AI received
+  output      Json     // What the AI returned
+  model       String   @default("gpt-4.1")
+  tokensUsed  Int?
+  latencyMs   Int?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, context, createdAt])
+}
+
+// ============================================
+// ANALYTICS (Lightweight event tracking)
+// ============================================
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  event     String   // page_view, product_click, bid_placed, purchase, etc
+  properties Json?   // Event-specific data
+  sessionId String?
+  createdAt DateTime @default(now())
+
+  @@index([event, createdAt])
+  @@index([userId])
+}
