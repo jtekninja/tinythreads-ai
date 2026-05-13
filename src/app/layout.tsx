@@ -91,7 +91,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-dvh bg-brand-white text-brand-indigo antialiased">
+      <body className="min-h-screen bg-brand-white text-brand-indigo antialiased">
         {children}
         <Toaster
           position="top-center"

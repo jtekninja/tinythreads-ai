@@ -40,6 +40,7 @@ export function Logo({
           width={dims.icon}
           height={dims.icon}
           className="object-contain"
+          style={{ width: dims.icon, height: dims.icon }}
         />
       </div>
     );
@@ -57,6 +58,7 @@ export function Logo({
           width={dims.icon}
           height={dims.icon}
           className="object-contain"
+          style={{ width: dims.icon, height: dims.icon }}
         />
       </div>
       {showText && variant === "full" && (
