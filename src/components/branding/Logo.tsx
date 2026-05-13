@@ -11,13 +11,6 @@ interface LogoProps {
   showText?: boolean;
 }
 
-const sizeMap = {
-  sm: { icon: 26, text: "text-xs" },
-  md: { icon: 52, text: "text-xl" },
-  lg: { icon: 60, text: "text-2xl" },
-  xl: { icon: 68, text: "text-3xl" },
-};
-
 const LOGO_PATH = "/branding/tt_tinythreads_logo.png";
 
 export function Logo({
@@ -26,48 +19,64 @@ export function Logo({
   className,
   showText = true,
 }: LogoProps) {
-  const dims = sizeMap[size];
+  // Simple, clean sizes — navbar gets a big logo, footer gets compact
+  const iconPx =
+    variant === "compact" || variant === "icon"
+      ? size === "xl"
+        ? 64
+        : 28
+      : 56;
+  const textCls =
+    variant === "compact"
+      ? size === "xl"
+        ? "text-3xl"
+        : "text-sm"
+      : "text-xl lg:text-2xl";
 
   if (variant === "icon") {
     return (
       <div
-        className={cn("relative flex-shrink-0", className)}
-        style={{ width: dims.icon, height: dims.icon }}
+        className={cn("relative shrink-0", className)}
+        style={{ width: iconPx, height: iconPx }}
       >
         <Image
           src={LOGO_PATH}
           alt="TinyThreads AI"
-          width={dims.icon}
-          height={dims.icon}
+          width={iconPx}
+          height={iconPx}
           className="object-contain"
-          style={{ width: dims.icon, height: dims.icon }}
+          priority
+          style={{ width: iconPx, height: iconPx }}
         />
       </div>
     );
   }
 
   return (
-    <Link href="/" className={cn("flex items-center gap-3 group", className)}>
+    <Link
+      href="/"
+      className={cn("flex items-center gap-3 group shrink-0", className)}
+    >
       <div
-        className="relative flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
-        style={{ width: dims.icon, height: dims.icon }}
+        className="relative shrink-0"
+        style={{ width: iconPx, height: iconPx }}
       >
         <Image
           src={LOGO_PATH}
           alt="TinyThreads AI"
-          width={dims.icon}
-          height={dims.icon}
+          width={iconPx}
+          height={iconPx}
           className="object-contain"
-          style={{ width: dims.icon, height: dims.icon }}
+          priority
+          style={{ width: iconPx, height: iconPx }}
         />
       </div>
       {showText && variant === "full" && (
         <span
           className={cn(
-            "font-bold tracking-tight gradient-brand-text whitespace-nowrap",
-            dims.text,
+            "font-extrabold tracking-tight gradient-brand-text whitespace-nowrap",
+            textCls,
           )}
-          style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
         >
           TinyThreads AI
         </span>
@@ -76,9 +85,8 @@ export function Logo({
         <span
           className={cn(
             "font-bold tracking-tight text-brand-indigo whitespace-nowrap",
-            dims.text,
+            textCls,
           )}
-          style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
         >
           TinyThreads
         </span>
